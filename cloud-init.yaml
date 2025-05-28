@@ -1,0 +1,17 @@
+#cloud-config
+packages:
+  - docker.io
+  - podman
+  - podman-compose
+  - python3-pip
+  - crun
+  - runc 
+write_files:
+  - path: /etc/containers/registries.conf.d/registries.conf
+    permissions: '0644'
+    owner: root:root
+    content: |
+      unqualified-search-registries = ["docker.io"]
+runcmd:
+ - usermod -aG docker ubuntu 
+ - docker run --rm --privileged tonistiigi/binfmt --install all
